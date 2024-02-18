@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include "raylib.h"
 
-#include "grid.h"
-#include "entity.h"
+#include "helper functions/grid.c"
+#include "helper functions/entity.c"
+#include "AStar/AStar.c"
 
 
 
@@ -57,25 +58,10 @@ int main(int argc, char *argv[]) {
 
         // Updating
         float deltaTime = GetFrameTime();
-        
         player.hit_box = (Rectangle) { player.position.x, player.position.y, 8, 8 };
         
         updatePlayer(&player, deltaTime, grid, num_rows, num_cols);
-        
-        if (IsKeyPressed(KEY_R)) {
-            grid = createGridMatrix(width, height, gridSquareDimension);
-            player.position = (Vector2) { width/2, height/2 };
 
-            rand_x = 0 + rand() / (RAND_MAX / (height - 0 + 1) + 1);
-            rand_y = 0 + rand() / (RAND_MAX / (width - 0 + 1) + 1);
-            e1.position = (Vector2) { rand_x, rand_y };
-            e1.hit_box = (Rectangle) { rand_x, rand_y, 8, 8 };
-        }
-
-
-        // if (IsKeyPressed(KEY_D) && )
-
-        
         if (IsKeyPressed(KEY_G)) {
             switch (debug) {
                 case 0: debug = 1; break;
@@ -94,6 +80,19 @@ int main(int argc, char *argv[]) {
                 case 3: debug = 0; break;
             } 
         }
+        
+        if (IsKeyPressed(KEY_R)) {
+            grid = createGridMatrix(width, height, gridSquareDimension);
+            player.position = (Vector2) { width/2, height/2 };
+
+            rand_x = 0 + rand() / (RAND_MAX / (height - 0 + 1) + 1);
+            rand_y = 0 + rand() / (RAND_MAX / (width - 0 + 1) + 1);
+            e1.position = (Vector2) { rand_x, rand_y };
+            e1.hit_box = (Rectangle) { rand_x, rand_y, 8, 8 };
+        }
+
+        int AStar_result = AStar(grid);
+        
 
 
 

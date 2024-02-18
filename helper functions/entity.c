@@ -33,12 +33,28 @@ int updatePlayer(Entity *player, float delta, GridSquare **grid, int r, int c) {
             int curr_rect_solid = grid[i][j].solid;
 
             bool hit_obstacle = false;
+            int reset_x = 5;
+            int reset_y = 5;
 
             // If rectangle is solid
             if (curr_rect_solid != 0) {                
                 hit_obstacle = CheckCollisionRecs(player->hit_box, curr_rect);
                 if (hit_obstacle) {
-                    player->position = (Vector2) { 100, 100 };
+                    
+                    // if (curr_rect.x < player->position.x) {
+                    //     reset_x = player->position.x - 5;
+                    // } else if (curr_rect.x > player->position.x) {
+                    //     reset_x = player->position.x + 5;
+                    // }
+
+                    // if (curr_rect.y < player->position.y) {
+                    //     reset_y = player->position.y - 5;
+                    // } else if (curr_rect.y > player->position.y) {
+                    //     reset_y = player->position.y + 5;
+                    // }
+
+                    player->position = (Vector2) { reset_x, reset_y };
+
                 }
                 
             }
