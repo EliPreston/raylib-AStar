@@ -32,14 +32,17 @@ int updatePlayer(Entity *player, float delta, GridSquare **grid, int r, int c) {
             Color curr_rect_color = grid[i][j].color;
             int curr_rect_solid = grid[i][j].solid;
 
+            bool hit_obstacle = false;
+
             // If rectangle is solid
             if (curr_rect_solid != 0) {                
-                bool hit_obstacle = CheckCollisionRecs(player->hit_box, curr_rect);
+                hit_obstacle = CheckCollisionRecs(player->hit_box, curr_rect);
                 if (hit_obstacle) {
-                    player->position = (Vector2) { 5, 5 };
+                    player->position = (Vector2) { 100, 100 };
                 }
                 
-            } 
+            }
+            
 
         }
     }

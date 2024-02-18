@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
     srand((unsigned) time(&t));
     int rand_x;
     int rand_y;
+    int debug = 0;
 
     // Defaults
     const int width = 1000;
@@ -56,6 +57,7 @@ int main(int argc, char *argv[]) {
 
         // Updating
         float deltaTime = GetFrameTime();
+        
         player.hit_box = (Rectangle) { player.position.x, player.position.y, 8, 8 };
         
         updatePlayer(&player, deltaTime, grid, num_rows, num_cols);
@@ -71,13 +73,37 @@ int main(int argc, char *argv[]) {
         }
 
 
+        // if (IsKeyPressed(KEY_D) && )
+
+        
+        if (IsKeyPressed(KEY_G)) {
+            switch (debug) {
+                case 0: debug = 1; break;
+                case 1: debug = 0; break;
+            } 
+        }
+        if (IsKeyPressed(KEY_N)) {
+            switch (debug) {
+                case 0: debug = 2; break;
+                case 2: debug = 0; break;
+            } 
+        }
+        if (IsKeyPressed(KEY_G) && IsKeyPressed(KEY_N)) {
+            switch (debug) {
+                case 0: debug = 3; break;
+                case 3: debug = 0; break;
+            } 
+        }
+
+
+
         // Drawing objects/entities
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
             
             // Draw grid
-            drawGridMatrix(grid, num_rows, num_cols);
+            drawGridMatrix(grid, num_rows, num_cols, debug);
            
             // Draw player
             DrawRectangleRec(player.hit_box, GREEN);

@@ -12,7 +12,7 @@ typedef struct GridNode {
 } GridNode;
 
 typedef struct GridSquare {
-    // Rectangle rect = {startx, starty, xdim, ydim};
+    // Rectangle rect = {startx, starty, width, height};
     Rectangle rect;
     Color color;
     int solid;
@@ -58,7 +58,7 @@ GridSquare **createGridMatrix(int windowWidth, int windowHeight, int gridSquareD
             };
             
 
-            if (rand() % 50 < 15) solid_val = 1;
+            if (rand() % 50 <10) solid_val = 1;
             
             GridSquare gs = {
                 {x_pos, y_pos, gridSquareDimension, gridSquareDimension},
@@ -90,7 +90,7 @@ void printGridMatrix(GridSquare **grid, int r, int c) {
     }
 }
 
-int drawGridMatrix(GridSquare **grid, int r, int c) {
+int drawGridMatrix(GridSquare **grid, int r, int c, int debug) {
 
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
@@ -100,14 +100,19 @@ int drawGridMatrix(GridSquare **grid, int r, int c) {
             int curr_rect_solid = grid[i][j].solid;
             GridNode curr_node = grid[i][j].node;
 
-            DrawCircle(curr_node.x_center, curr_node.y_center, 1, RED);
-
             // If solid != 0
             if (curr_rect_solid) {
                 DrawRectangleRec(curr_rect, curr_rect_color); 
-            } else {
-                DrawRectangleLinesEx(curr_rect, 1.0, curr_rect_color);
+            } else if (debug == 1) {
+                DrawRectangleLinesEx(curr_rect, 0.25, curr_rect_color);
+            } else if (debug == 2) {
+                DrawCircle(curr_node.x_center, curr_node.y_center, 1, RED);
+            } else if (debug == 3) {
+                DrawRectangleLinesEx(curr_rect, 0.25, curr_rect_color);
+                DrawCircle(curr_node.x_center, curr_node.y_center, 1, RED);
             }
+            
+            // DrawCircle(curr_node.x_center, curr_node.y_center, 1, RED);
 
         }
     }
