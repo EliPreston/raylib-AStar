@@ -3,7 +3,9 @@
 
 
 
-int AStar(GridSquare **grid) {
+
+
+int AStar(GridNode **grid) {
 
 
     return 0;

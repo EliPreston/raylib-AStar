@@ -18,7 +18,7 @@ typedef struct Entity {
     Rectangle hit_box;
 } Entity;
 
-int updatePlayer(Entity *player, float delta, GridSquare **grid, int r, int c) {
+int updatePlayer(Entity *player, float delta, GridNode **grid, int r, int c) {
     if (IsKeyDown(KEY_LEFT)) player->position.x -= MOVEMENT_SPD*delta;
     if (IsKeyDown(KEY_RIGHT)) player->position.x += MOVEMENT_SPD*delta;
     if (IsKeyDown(KEY_UP)) player->position.y -= MOVEMENT_SPD*delta;
@@ -28,9 +28,9 @@ int updatePlayer(Entity *player, float delta, GridSquare **grid, int r, int c) {
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
 
-            Rectangle curr_rect = grid[i][j].rect;
-            Color curr_rect_color = grid[i][j].color;
-            int curr_rect_solid = grid[i][j].solid;
+            Rectangle curr_rect = grid[i][j].grid_square.rect;
+            Color curr_rect_color = grid[i][j].grid_square.color;
+            int curr_rect_solid = grid[i][j].grid_square.solid;
 
             bool hit_obstacle = false;
             int reset_x = 5;

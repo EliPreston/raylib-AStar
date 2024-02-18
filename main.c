@@ -5,6 +5,7 @@
 
 #include "helper functions/grid.c"
 #include "helper functions/entity.c"
+#include "maze creation/maze.c"
 #include "AStar/AStar.c"
 
 
@@ -47,7 +48,7 @@ int main(int argc, char *argv[]) {
     int num_rows = height / gridSquareDimension;
     int num_cols = width / gridSquareDimension;
     
-    GridSquare** grid = NULL;
+    GridNode** grid = NULL;
     grid = createGridMatrix(width, height, gridSquareDimension);
     
 

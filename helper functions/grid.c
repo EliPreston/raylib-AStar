@@ -6,22 +6,42 @@
 #include "raylib.h"
 
 
-typedef struct GridNode {
-    int x_center;
-    int y_center;
-} GridNode;
+// typedef struct GridNode {
+//     int x_center;
+//     int y_center;
+// } GridNode;
+
+// typedef struct GridSquare {
+//     // Rectangle rect = {startx, starty, width, height};
+//     Rectangle rect;
+//     Color color;
+//     int solid;
+//     GridNode node;
+// } GridSquare;
+
 
 typedef struct GridSquare {
     // Rectangle rect = {startx, starty, width, height};
     Rectangle rect;
     Color color;
     int solid;
-    GridNode node;
 } GridSquare;
 
+typedef struct GridNode {
+    int x_center;
+    int y_center;
+    GridSquare grid_square;
+
+    int cost;                       // Cost to reach  node
+    int heuristic;                  // Heuristic value of  node
+    struct GridNode* parent_node;   // Parent node
+} GridNode;
 
 
-GridSquare **createGridMatrix(int windowWidth, int windowHeight, int gridSquareDimension) {
+
+
+
+GridNode **createGridMatrix(int windowWidth, int windowHeight, int gridSquareDimension) {
 
     int num_rows = windowHeight / gridSquareDimension;
     int num_cols = windowWidth / gridSquareDimension;
@@ -29,11 +49,11 @@ GridSquare **createGridMatrix(int windowWidth, int windowHeight, int gridSquareD
     printf("%d by %d\n", num_rows, num_cols);
     
 
-    GridSquare **grid;
-    grid = malloc(num_rows * sizeof(GridSquare *));
+    GridNode **grid;
+    grid = malloc(num_rows * sizeof(GridNode *));
 
     for (int i = 0; i < num_rows; i++) {
-        grid[i] = malloc(num_cols * sizeof(GridSquare));
+        grid[i] = malloc(num_cols * sizeof(GridNode));
     }
 
     int x_pos = 0;
@@ -52,22 +72,25 @@ GridSquare **createGridMatrix(int windowWidth, int windowHeight, int gridSquareD
 
             x_center = x_pos + (gridSquareDimension/2);
             y_center = y_pos + (gridSquareDimension/2);
-            GridNode gn = {
-                x_center,
-                y_center,
-            };
-            
-
+        
             if (rand() % 50 <10) solid_val = 1;
             
             GridSquare gs = {
                 {x_pos, y_pos, gridSquareDimension, gridSquareDimension},
                 DARKGRAY,
                 solid_val,
-                gn,
             };
 
-            grid[r][c] = gs;
+            GridNode gn = {
+                x_center,
+                y_center,
+                gs,
+                -1,     // Initial cost and heuristic values set to -1
+                -1,     // which will be changed later
+                NULL,   // No parent node on initialization
+            };
+
+            grid[r][c] = gn;
             x_pos = x_pos + gridSquareDimension;
             solid_val = 0;
         }
@@ -79,26 +102,26 @@ GridSquare **createGridMatrix(int windowWidth, int windowHeight, int gridSquareD
     return grid;
 }
 
-void printGridMatrix(GridSquare **grid, int r, int c) {
+void printGridMatrix(GridNode **grid, int r, int c) {
 
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
-            int s = grid[i][j].solid;
+            int s = grid[i][j].grid_square.solid;
             printf("%d ", s);
         }
         printf("\n");
     }
 }
 
-int drawGridMatrix(GridSquare **grid, int r, int c, int debug) {
+int drawGridMatrix(GridNode **grid, int r, int c, int debug) {
 
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
 
-            Rectangle curr_rect = grid[i][j].rect;
-            Color curr_rect_color = grid[i][j].color;
-            int curr_rect_solid = grid[i][j].solid;
-            GridNode curr_node = grid[i][j].node;
+            Rectangle curr_rect = grid[i][j].grid_square.rect;
+            Color curr_rect_color = grid[i][j].grid_square.color;
+            int curr_rect_solid = grid[i][j].grid_square.solid;
+            GridNode curr_node = grid[i][j];
 
             // If solid != 0
             if (curr_rect_solid) {
