@@ -1,6 +1,7 @@
 # My files
 *.txt
 *.md
+*.bak
 
 # Prerequisites
 *.d
