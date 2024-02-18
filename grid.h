@@ -1,6 +1,8 @@
 // Header files
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
 #include "raylib.h"
 
 
@@ -13,16 +15,6 @@ typedef struct GridSquare {
 } GridSquare;
 
 
-void switchSolidVal(int *s) {
-    if ((*s) == 0) {
-        (*s) = 1;
-        return;
-    }
-    if ((*s) == 1) {
-        (*s) = 0;
-        return;
-    }
-}
 
 GridSquare **createGridMatrix(int windowWidth, int windowHeight, int gridSquareDimension) {
 
@@ -41,26 +33,29 @@ GridSquare **createGridMatrix(int windowWidth, int windowHeight, int gridSquareD
 
     int x_pos = 0;
     int y_pos = 0;
-    int col_switch = 0;
+    
+    int solid_val = 0;
+    time_t t;
+    srand((unsigned) time(&t));
 
     for (int r = 0; r < num_rows; r++) {
+        
         for (int c = 0; c < num_cols; c++) {
-            
-            // printf("y: %d, x: %d\n", y_pos, x_pos);
+
+            if (rand() % 50 < 15) solid_val = 1;
             
             GridSquare gs = {
                 {x_pos, y_pos, gridSquareDimension, gridSquareDimension},
                 DARKGRAY,
-                col_switch,
+                solid_val,
                 0,
             };
 
-            switchSolidVal(&col_switch);
-
             grid[r][c] = gs;
             x_pos = x_pos + gridSquareDimension;
+            solid_val = 0;
         }
-        switchSolidVal(&col_switch);
+
         x_pos = 0;
         y_pos = y_pos + gridSquareDimension;
     }
@@ -81,7 +76,6 @@ void printGridMatrix(GridSquare **grid, int r, int c) {
 
 int drawGridMatrix(GridSquare **grid, int r, int c) {
 
-
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
 
@@ -93,7 +87,7 @@ int drawGridMatrix(GridSquare **grid, int r, int c) {
             if (curr_rect_solid) {
                 DrawRectangleRec(curr_rect, curr_rect_color); 
             } else {
-                DrawRectangleLinesEx(curr_rect, 1.0, curr_rect_color);
+                // DrawRectangleLinesEx(curr_rect, 1.0, curr_rect_color);
             }
 
         }
