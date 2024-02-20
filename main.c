@@ -1,12 +1,22 @@
 // Header files
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <limits.h>
+
+
 #include "raylib.h"
 
-#include "helper functions/grid.c"
-#include "helper functions/entity.c"
-#include "maze creation/maze.c"
-#include "AStar/AStar.c"
+#include "structdefs.h"
+
+#include "helper_functions/grid.c"
+#include "helper_functions/entity.c"
+
+#include "A_Star/astar.c"
+
+#include "maze_creation/maze.c"
+
+
 
 
 
@@ -24,35 +34,34 @@ int main(int argc, char *argv[]) {
     // Defaults
     const int width = 1000;
     const int height = 600;
-    const int gridSquareDimension = 20;
+    const int gridSquareDimension = 100;
 
-    // If args are passed, rebind them
-    // CLA 1: grid square dimension
-    // CLA 2: window width
-    // CLA 3: window height
-    // if (argc == 2) {
-    //     int 
-    // }
-    InitWindow(width, height, "A-Maze-Ing");
-
-    Entity player = { 
-        (Vector2) { width/2, height/2 },
-        'p',
-        0,
-    };
-
-    Entity e1 = spawnEnemy();
-
-
-    // Set up grid
+     // Set up grid
     int num_rows = height / gridSquareDimension;
     int num_cols = width / gridSquareDimension;
     
     GridNode** grid = NULL;
     grid = createGridMatrix(width, height, gridSquareDimension);
+
+    InitWindow(width, height, "A-Maze-Ing");
+    SetTargetFPS(60);
+
+
+    GridNode start, end;
+    start = grid[1][1];
+    end = grid[num_rows-2][num_cols-2];
+    int AStar_result = AStar(grid, num_rows, num_cols, start, end);
+
+
+    // Setup entities
+    Entity player = { 
+        (Vector2) { width/2, height/2 },
+        'p',
+        0,
+    };
     
 
-    SetTargetFPS(60);
+    // printGridMatrix(grid, num_rows, num_cols);
 
     // Main game loop  ---------------
     while (!WindowShouldClose()) {
@@ -85,17 +94,8 @@ int main(int argc, char *argv[]) {
         if (IsKeyPressed(KEY_R)) {
             grid = createGridMatrix(width, height, gridSquareDimension);
             player.position = (Vector2) { width/2, height/2 };
-
-            rand_x = 0 + rand() / (RAND_MAX / (height - 0 + 1) + 1);
-            rand_y = 0 + rand() / (RAND_MAX / (width - 0 + 1) + 1);
-            e1.position = (Vector2) { rand_x, rand_y };
-            e1.hit_box = (Rectangle) { rand_x, rand_y, 8, 8 };
+            
         }
-
-        int AStar_result = AStar(grid);
-        
-
-
 
         // Drawing objects/entities
         BeginDrawing();
@@ -106,8 +106,12 @@ int main(int argc, char *argv[]) {
             drawGridMatrix(grid, num_rows, num_cols, debug);
            
             // Draw player
-            DrawRectangleRec(player.hit_box, GREEN);
-            DrawRectangleRec(e1.hit_box, RED);
+            DrawRectangleRec(player.hit_box, BLUE);
+
+            // Start and end squares 
+            DrawRectangle(start.grid_square.rect.x, start.grid_square.rect.y, 20, 20, GREEN);
+            DrawRectangle(end.grid_square.rect.x, end.grid_square.rect.y, 20, 20, RED);
+            
 
         EndDrawing();
     }

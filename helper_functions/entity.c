@@ -1,14 +1,13 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
-
-#include "raylib.h"
+// Header files
+// #include <stdlib.h>
+// #include <stdio.h>
+// #include <time.h>
+// #include "raylib.h"
 
 
 
 // Macros
 #define MOVEMENT_SPD 150.0f
-
 
 
 typedef struct Entity {
@@ -33,8 +32,8 @@ int updatePlayer(Entity *player, float delta, GridNode **grid, int r, int c) {
             int curr_rect_solid = grid[i][j].grid_square.solid;
 
             bool hit_obstacle = false;
-            int reset_x = 5;
-            int reset_y = 5;
+            int reset_x = 500;
+            int reset_y = 300;
 
             // If rectangle is solid
             if (curr_rect_solid != 0) {                
@@ -65,19 +64,31 @@ int updatePlayer(Entity *player, float delta, GridNode **grid, int r, int c) {
     return 0;
 }
 
-Entity spawnEnemy() {
+Entity spawnEnemy(GridNode **grid, int r, int c) {
 
     time_t t;
     srand((unsigned) time(&t));
 
-    int rand_x = 0 + rand() / (RAND_MAX / (600 - 0 + 1) + 1);
-    int rand_y = 0 + rand() / (RAND_MAX / (1000 - 0 + 1) + 1);
+    printf("%d, %d", r, c);
+
+    // int rand_x = rand() / (RAND_MAX / (600 - 0 + 1) + 1);
+    // int rand_y = rand() / (RAND_MAX / (1000 - 0 + 1) + 1);
+    // printf("Enemy spawned at: %d, %d\n", rand_x, rand_y);
+
+
+    // int rand_col = rand() % (c + 1 - 0) + 0;
+    // int rand_row = rand() % (r + 1 - 0) + 0;
+    // // printf("Enemy spawned at: %d, %d\n", rand_col, rand_row);
+
+    // int x_loc = grid[rand_col][rand_row].x_center;
+    // int y_loc = grid[rand_col][rand_row].y_center;
+    // printf("Enemy spawned at: %d, %d\n", rand_col, rand_row);
     
     Entity enemy = {
-        (Vector2) { rand_x, rand_y },
+        (Vector2) { 10, 10 },
         'e',
         0,
-        (Rectangle) { rand_x, rand_y, 8, 8 },
+        (Rectangle) { 10, 10, 8, 8 },
     };
 
     return enemy;
