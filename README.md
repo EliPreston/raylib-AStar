@@ -1,1 +1,1 @@
-# raylib-maze
+# raylib-A* Visualization (in progress)
