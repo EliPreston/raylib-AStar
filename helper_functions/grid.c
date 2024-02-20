@@ -35,7 +35,7 @@ GridNode **createGridMatrix(int windowWidth, int windowHeight, int gridSquareDim
             x_center = x_pos + (gridSquareDimension/2);
             y_center = y_pos + (gridSquareDimension/2);
         
-            // if (rand() % 50 <10) solid_val = 1;
+            if (rand() % 50 <10) solid_val = 1;
             if (r == 0) solid_val = 1;
             if (c == 0) solid_val = 1;
             if (r == num_rows-1) solid_val = 1;

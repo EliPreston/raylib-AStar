@@ -14,11 +14,6 @@
 
 #include "A_Star/astar.c"
 
-#include "maze_creation/maze.c"
-
-
-
-
 
 
 // Program Entry
@@ -34,7 +29,7 @@ int main(int argc, char *argv[]) {
     // Defaults
     const int width = 1000;
     const int height = 600;
-    const int gridSquareDimension = 100;
+    const int gridSquareDimension = 20;
 
      // Set up grid
     int num_rows = height / gridSquareDimension;
@@ -43,14 +38,14 @@ int main(int argc, char *argv[]) {
     GridNode** grid = NULL;
     grid = createGridMatrix(width, height, gridSquareDimension);
 
-    InitWindow(width, height, "A-Maze-Ing");
+    InitWindow(width, height, "A* Search Visualization using Raylib");
     SetTargetFPS(60);
 
 
     GridNode start, end;
     start = grid[1][1];
     end = grid[num_rows-2][num_cols-2];
-    int AStar_result = AStar(grid, num_rows, num_cols, start, end);
+    // int AStar_result = AStar(grid, num_rows, num_cols, start, end);
 
 
     // Setup entities

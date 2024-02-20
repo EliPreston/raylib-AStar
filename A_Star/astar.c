@@ -2,7 +2,7 @@
 // #include <stdlib.h>
 // #include <stdio.h>
 // #include <limits.h>
-// #include "starheap.c"
+#include "astarheap.c"
 
 
 
@@ -34,10 +34,10 @@ int AStar(GridNode **grid, int r, int c, GridNode start, GridNode end) {
     };
 
     Heap* open_set = createEmptyHeap(r*c);
-    insertNode(start_node);
+    // insertNode(start_node);
 
     
-    // free(open_set);
+    free(open_set);
     // free(closed_set);
     return 0;
 }
